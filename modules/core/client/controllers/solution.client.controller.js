@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('SolutionController', ['$scope', 'Authentication', '$mdSidenav', '$rootScope', '$mdMenu', '$state', '$stateParams', 'SolutionService', 'IssueService', 'ActionService', '$q', '$mdDialog', 'VoteService', 'VOTE_TYPES', 'solution', 'actions', 'UploadService',
-  function ($scope, Authentication, $mdSidenav, $rootScope, $mdMenu, $state, $stateParams, SolutionService, IssueService, ActionService, $q, $mdDialog, VoteService, VOTE_TYPES, solution, actions, UploadService) {
+angular.module('core').controller('SolutionController', ['$scope', 'Authentication', '$mdSidenav', '$rootScope', '$mdMenu', '$state', '$stateParams', 'SolutionService', 'IssueService', 'ActionService', '$q', '$mdDialog', 'VoteService', 'VOTE_TYPES', 'solution', 'actions',
+  function ($scope, Authentication, $mdSidenav, $rootScope, $mdMenu, $state, $stateParams, SolutionService, IssueService, ActionService, $q, $mdDialog, VoteService, VOTE_TYPES, solution, actions) {
     // This provides Authentication context.
     var vm = this;
     vm.solution = solution;
@@ -32,17 +32,8 @@ angular.module('core').controller('SolutionController', ['$scope', 'Authenticati
     }
 
     vm.createOrUpdate = function() {
-      var promise = $q.resolve();
-      if(vm.imageFile) {
-        promise = UploadService.upload(vm.imageFile).then(function() {
-          console.log('uploaded file', vm.imageFile);
-          vm.solution.imageUrl = vm.imageFile.result.url;
-        });
-      }
-      return promise.then(function() {
-        return SolutionService.createOrUpdate(vm.solution).then(function(solution) {
-          $state.go('solutions.view', { solutionId: solution._id });
-        });
+      return SolutionService.createOrUpdate(vm.solution).then(function(solution) {
+        $state.go('solutions.view', { solutionId: solution._id });
       });
     };
 

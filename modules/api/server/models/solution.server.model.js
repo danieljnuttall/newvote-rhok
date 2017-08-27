@@ -41,11 +41,7 @@ var SolutionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Issue',
     required: true
-  }],
-  currentUserVote: {
-    type: Schema.ObjectId,
-    ref: 'Vote'
-  }
+  }]
 });
 
 mongoose.model('Solution', SolutionSchema);

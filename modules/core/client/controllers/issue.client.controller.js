@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('IssueController', ['$scope', 'Authentication', '$mdSidenav', '$rootScope', '$mdMenu', '$state', '$stateParams', 'IssueService', '$mdDialog', 'issue', 'VoteService', 'solutions', 'UploadService', '$q',
-  function ($scope, Authentication, $mdSidenav, $rootScope, $mdMenu, $state, $stateParams, IssueService, $mdDialog, issue, VoteService, solutions, UploadService, $q) {
+angular.module('core').controller('IssueController', ['$scope', 'Authentication', '$mdSidenav', '$rootScope', '$mdMenu', '$state', '$stateParams', 'IssueService', '$mdDialog', 'issue', 'VoteService', 'solutions',
+  function ($scope, Authentication, $mdSidenav, $rootScope, $mdMenu, $state, $stateParams, IssueService, $mdDialog, issue, VoteService, solutions) {
     // This provides Authentication context.
     var vm = this;
     vm.issue = issue;
@@ -12,20 +12,11 @@ angular.module('core').controller('IssueController', ['$scope', 'Authentication'
       var title = vm.issue.name;
       if($state.is('issues.edit')) title = 'Edit Issue - ' + title;
       $rootScope.pageTitle = title;
-    }
+    } 
 
     vm.createOrUpdate = function() {
-      var promise = $q.resolve();
-      if(vm.imageFile) {
-        promise = UploadService.upload(vm.imageFile).then(function() {
-          console.log('uploaded file', vm.imageFile);
-          vm.issue.imageUrl = vm.imageFile.result.url;
-        });
-      }
-      return promise.then(function() {
-        return IssueService.createOrUpdate(vm.issue).then(function(issue) {
-          $state.go('issues.view', { issueId: issue._id });
-        });
+      return IssueService.createOrUpdate(vm.issue).then(function(issue) {
+        $state.go('issues.view', { issueId: issue._id });
       });
     };
 
@@ -48,6 +39,5 @@ angular.module('core').controller('IssueController', ['$scope', 'Authentication'
       $event.stopPropagation();
       VoteService.vote(solution, 'Solution', voteType);
     };
-
   }
 ]);
