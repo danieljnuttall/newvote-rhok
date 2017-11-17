@@ -1,0 +1,4 @@
+# Excel and output files
+*.xlsx
+*.csv
+*.json
